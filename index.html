@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learnova – Learn. Grow. Succeed.</title>
+<link rel="icon" type="image/png" href="assets/brand/logo-icon.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<div id="bg-motion">
+  <div class="ambient-orb orb-gold"></div>
+  <div class="ambient-orb orb-blue"></div>
+  <div class="bg-motif m1"></div>
+  <div class="bg-motif m2"></div>
+  <div class="bg-motif m3"></div>
+</div>
+
+<div id="app">
+
+  <header class="topbar">
+    <button class="icon-btn hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="topbar-brand">
+      <img src="assets/brand/logo-icon.png" alt="Learnova">
+      <span>Learnova</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" id="laiShortcut" aria-label="Open L-Ai">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4.97 0-9 3.5-9 7.8 0 2.5 1.35 4.72 3.46 6.16-.12.98-.48 2.14-1.3 3.24 0 0 2.36-.28 4.2-1.86.83.24 1.72.36 2.64.36 4.97 0 9-3.5 9-7.9S16.97 3 12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="moon" viewBox="0 0 24 24" fill="none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.8"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <nav class="rail" id="railNav">
+    <div class="rail-brand">
+      <img src="assets/brand/logo-icon.png" alt="Learnova">
+      <div><strong>LEARNOVA</strong><span>Learn. Grow. Succeed.</span></div>
+    </div>
+    <div class="rail-nav">
+      <button class="nav-link" data-view="home"><svg viewBox="0 0 24 24" fill="none"><path d="M4 11 12 4l8 7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>Home</button>
+      <button class="nav-link" data-view="library"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5v-13Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Library</button>
+      <button class="nav-link" data-view="quizzes"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7v6c0 4.5 3.4 7.5 8 9 4.6-1.5 8-4.5 8-9V7l-8-4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Quizzes</button>
+      <button class="nav-link" data-view="compete"><svg viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0V4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6 6H3v1a4 4 0 0 0 4 4M18 6h3v1a4 4 0 0 1-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Compete</button>
+      <button class="nav-link" data-view="classes"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c1.4-3.8 4-5.6 7-5.6s5.6 1.8 7 5.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="19" cy="7" r="2" stroke="currentColor" stroke-width="1.5"/></svg>Classes</button>
+      <button class="nav-link" data-view="lai"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3c-4.97 0-9 3.5-9 7.8 0 2.5 1.35 4.72 3.46 6.16-.12.98-.48 2.14-1.3 3.24 0 0 2.36-.28 4.2-1.86.83.24 1.72.36 2.64.36 4.97 0 9-3.5 9-7.9S16.97 3 12 3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>L-Ai assistant</button>
+      <div class="rail-divider"></div>
+      <button class="nav-link" data-view="profile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z" stroke="currentColor" stroke-width="1.7"/><path d="M4 20c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Profile & Wallet</button>
+      <button class="nav-link" data-view="notices"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h11l3 3v13H5V4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10h7M9 14h7M9 18h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Official Notices</button>
+      <button class="nav-link" data-view="about"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 8v.01M12 11v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>About Us</button>
+      <button class="nav-link" data-view="terms"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Terms of Service</button>
+      <button class="nav-link" data-view="privacy"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Privacy Policy</button>
+      <button class="nav-link" data-view="settings"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.14-1.4l2-1.6-2-3.4-2.4.7a7 7 0 0 0-2.4-1.4L13.6 2h-3.2l-.46 2.9a7 7 0 0 0-2.4 1.4l-2.4-.7-2 3.4 2 1.6a7 7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-.7a7 7 0 0 0 2.4 1.4l.46 2.9h3.2l.46-2.9a7 7 0 0 0 2.4-1.4l2.4.7 2-3.4-2-1.6c.1-.46.14-.93.14-1.4Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Settings</button>
+    </div>
+    <div class="rail-momentum">
+      <span style="text-transform:uppercase;letter-spacing:.08em;font-size:10px;color:var(--gold-500);font-weight:700;">Daily momentum</span>
+      <strong>Keep your streak alive</strong>
+      <span>Seven days of focused revision and counting.</span>
+      <div class="streak-row"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 2c2 4-3 5-3 9a5 5 0 0 0 10 0c0-2-1-3-1-3 1 4-2 5-2 2 0-3 2-4 1-8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg><span id="railStreak">12 days</span></div>
+    </div>
+    <div class="rail-profile">
+      <div class="avatar-circle" id="railAvatar">A</div>
+      <div><strong id="railName">Achiri Neba</strong><span id="railRole">Student · GBHS Bamenda</span></div>
+    </div>
+  </nav>
+
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <nav class="side-menu" id="sideMenu">
+    <div class="side-profile">
+      <div class="avatar-circle" id="sideAvatar">A</div>
+      <div class="side-profile-info">
+        <strong id="sideName">Achiri Neba</strong>
+        <span id="sideRole">Student · GBHS Bamenda</span>
+      </div>
+    </div>
+    <ul class="menu-list">
+      <li><button data-view="profile"><svg viewBox="0 0 24 24" fill="none"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z" stroke="currentColor" stroke-width="1.7"/><path d="M4 20c1.4-3.6 4.6-5.5 8-5.5s6.6 1.9 8 5.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Profile & Wallet</button></li>
+      <li><button data-view="notices"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h11l3 3v13H5V4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 10h7M9 14h7M9 18h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Official Notices</button></li>
+      <li><button data-view="about"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 8v.01M12 11v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>About Us</button></li>
+      <li><button data-view="terms"><svg viewBox="0 0 24 24" fill="none"><path d="M6 3h9l4 4v14H6V3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Terms of Service</button></li>
+      <li><button data-view="privacy"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>Privacy Policy</button></li>
+      <li><button data-view="settings"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M19 12a7 7 0 0 0-.14-1.4l2-1.6-2-3.4-2.4.7a7 7 0 0 0-2.4-1.4L13.6 2h-3.2l-.46 2.9a7 7 0 0 0-2.4 1.4l-2.4-.7-2 3.4 2 1.6a7 7 0 0 0 0 2.8l-2 1.6 2 3.4 2.4-.7a7 7 0 0 0 2.4 1.4l.46 2.9h3.2l.46-2.9a7 7 0 0 0 2.4-1.4l2.4.7 2-3.4-2-1.6c.1-.46.14-.93.14-1.4Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>Settings</button></li>
+    </ul>
+    <div class="menu-foot">
+      <p>Learnova – Learn. Grow. Succeed.<br>Mobile educational platform for Cameroon.</p>
+    </div>
+  </nav>
+
+  <main id="viewport">
+
+    <section class="view" id="view-home" data-view="home">
+      <div class="view-head reveal reveal-up">
+        <h1 id="homeGreeting">Good afternoon, Achiri</h1>
+        <p>Form 5 Science · GBHS Bamenda</p>
+      </div>
+
+      <div class="stat-scroll">
+        <div class="stat-card reveal reveal-up"><div class="stat-label">Current L-Credits</div><div class="stat-value">480</div><div class="stat-sub">Premium Plus</div></div>
+        <div class="stat-card reveal reveal-up"><div class="stat-label">Study streak</div><div class="stat-value">12 days</div><div class="stat-sub">Keep it going</div></div>
+        <div class="stat-card reveal reveal-up"><div class="stat-label">Best subject rank</div><div class="stat-value">S</div><div class="stat-sub">Mathematics</div></div>
+        <div class="stat-card reveal reveal-up"><div class="stat-label">Devices logged in</div><div class="stat-value">2 / 2</div><div class="stat-sub">Premium Plus limit</div></div>
+      </div>
+
+      <div class="banner reveal reveal-fade">
+        <h4>GCE Eve-of-Exam Revision is live</h4>
+        <p>One month to go. Tonight's last-minute session covers Mathematics and Biology at 7:00 PM.</p>
+        <button class="banner-cta" data-goto="library">Start revising</button>
+      </div>
+
+      <div class="section-title"><h3>Continue learning</h3><button data-goto="library">See all</button></div>
+      <div class="grid-3" id="homeSubjectGrid"></div>
+
+      <div class="section-title"><h3>This week</h3><button data-goto="compete">See all</button></div>
+      <div id="homeWeekList"></div>
+    </section>
+
+    <section class="view" id="view-library" data-view="library">
+      <div class="view-head reveal reveal-up"><h1>Library</h1><p>Past papers, notes, videos and Concours information</p></div>
+      <div class="tab-toggle" id="libraryTabs">
+        <button data-tab="papers" class="active">Past Papers</button>
+        <button data-tab="notes">Notes</button>
+        <button data-tab="videos">Videos</button>
+        <button data-tab="concours">Concours Desk</button>
+      </div>
+      <div class="sort-bar">
+        <div class="search-pill">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.4-3.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="text" id="librarySearch" placeholder="Search subject, topic or year">
+        </div>
+        <button class="sort-btn" id="librarySortBtn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 5v14M7 5 4 8M7 5l3 3M17 19V5m0 14 3-3m-3 3-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="librarySortLabel">Newest</span>
+        </button>
+      </div>
+      <div class="chip-row" id="libraryLevelChips"></div>
+      <div id="libraryList"></div>
+    </section>
+
+    <section class="view" id="view-quizzes" data-view="quizzes">
+      <div class="view-head reveal reveal-up"><h1>Quizzes & Ranking</h1><p>Pick a subject and difficulty, then climb the leaderboard</p></div>
+      <div class="tab-toggle" id="quizTabs">
+        <button data-tab="play" class="active">Play</button>
+        <button data-tab="board">Leaderboard</button>
+      </div>
+
+      <div id="quizPlayPane">
+        <div class="chip-row" id="quizDifficultyChips">
+          <button class="chip active" data-diff="Low">Low</button>
+          <button class="chip" data-diff="Medium">Medium</button>
+          <button class="chip" data-diff="High">High</button>
+        </div>
+        <div class="grid-2" id="quizGrid"></div>
+      </div>
+
+      <div id="quizBoardPane" style="display:none;">
+        <div class="sort-bar">
+          <div class="search-pill">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.4-3.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input type="text" id="boardSearch" placeholder="Find a student">
+          </div>
+          <button class="sort-btn" id="boardSortBtn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 5v14M7 5 4 8M7 5l3 3M17 19V5m0 14 3-3m-3 3-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="boardSortLabel">By rank</span>
+          </button>
+        </div>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">Mathematics · High difficulty · best attempt only</p>
+        <div id="leaderboardList"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-compete" data-view="compete">
+      <div class="view-head reveal reveal-up"><h1>Compete</h1><p>Rooms, monthly competitions and the National Hackathon</p></div>
+      <div class="tab-toggle" id="competeTabs">
+        <button data-tab="rooms" class="active">Rooms</button>
+        <button data-tab="monthly">Monthly</button>
+        <button data-tab="hackathon">Hackathon</button>
+      </div>
+
+      <div id="competeRoomsPane">
+        <div class="grid-2">
+          <div class="tile reveal reveal-left" id="createRoomTile">
+            <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+            <strong>Create a room</strong>
+            <span>Invite friends with a link</span>
+          </div>
+          <div class="tile reveal reveal-right" id="joinRoomTile">
+            <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 5H5v14h4M15 5h4v14h-4M9 12h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <strong>Join a room</strong>
+            <span>Enter an invite code</span>
+          </div>
+        </div>
+        <div class="glass-card reveal reveal-up" style="margin-top:14px;" id="teacherRoomCard">
+          <h4 style="font-size:14px;margin-bottom:6px;">Teacher-hosted room</h4>
+          <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;">Teachers upload a question document and an answer document, set a time limit and may attach a cash reward for the first participants, funded to Learnova in advance.</p>
+          <button class="btn btn-outline btn-block" style="margin-top:12px;" id="teacherRoomBtn">Switch to Teacher preview</button>
+        </div>
+      </div>
+
+      <div id="competeMonthlyPane" style="display:none;">
+        <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;">Open to eight learner categories · 250 FCFA per individual entrant</p>
+        <div class="chip-row" id="monthlyCategoryChips"></div>
+        <div class="tab-toggle" id="monthlyModeToggle">
+          <button data-mode="individual" class="active">Individual</button>
+          <button data-mode="school">School (min. 10)</button>
+        </div>
+        <div class="glass-card reveal reveal-up">
+          <h4 style="font-size:14px;">This month's schedule</h4>
+          <div id="monthlySchedule" style="margin-top:10px;"></div>
+          <button class="btn btn-primary btn-block" style="margin-top:14px;" id="registerMonthlyBtn">Register – 250 FCFA</button>
+        </div>
+      </div>
+
+      <div id="competeHackathonPane" style="display:none;">
+        <div class="glass-card reveal reveal-up" style="margin-bottom:16px;">
+          <h4 style="font-size:14px;">Learnova National Hackathon</h4>
+          <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;margin-top:6px;">Top performers of the monthly competition qualify: for O'Level, the top 3 per examination class per school; for A'Level, the top 3 per series per school. Participation is 500 FCFA per qualified student, competing individually while representing their school.</p>
+        </div>
+        <div class="section-title"><h3>O'Level – by class</h3></div>
+        <div class="chip-row" id="olevelClassChips"></div>
+        <div class="section-title"><h3>A'Level – by series</h3></div>
+        <div class="grid-3" id="seriesGrid"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-classes" data-view="classes">
+      <div class="view-head reveal reveal-up"><h1>Online Classes</h1><p>Live, paid tutoring groups hosted by verified teachers</p></div>
+      <div class="sort-bar">
+        <div class="search-pill">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3.4-3.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="text" id="classSearch" placeholder="Search teacher or subject">
+        </div>
+        <button class="sort-btn" id="classSortBtn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 5v14M7 5 4 8M7 5l3 3M17 19V5m0 14 3-3m-3 3-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="classSortLabel">Top rated</span>
+        </button>
+      </div>
+      <div class="glass-card reveal reveal-fade" id="teacherCreateBanner" style="display:none;margin-bottom:14px;">
+        <h4 style="font-size:14px;">Host a class</h4>
+        <p style="font-size:12.5px;color:var(--text-secondary);margin-top:4px;">Create a paid group, set your price, and get certified for better placement.</p>
+        <div class="grid-2" style="margin-top:12px;">
+          <button class="btn btn-primary" id="openCreateClass">Create a class</button>
+          <button class="btn btn-outline" id="openCertification">Get certified</button>
+        </div>
+      </div>
+      <div id="teacherList"></div>
+    </section>
+
+    <section class="view" id="view-lai" data-view="lai">
+      <div class="view-head reveal reveal-up"><h1>L-Ai</h1><p>Your school-related study assistant</p></div>
+      <div class="chat-wrap" id="chatWrap"></div>
+      <div class="chat-input-bar">
+        <button class="chat-ghost" aria-label="Voice note"><svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z" stroke="currentColor" stroke-width="1.7"/><path d="M6 11a6 6 0 0 0 12 0M12 19v2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+        <button class="chat-ghost" aria-label="Attach image"><svg viewBox="0 0 24 24" width="18" height="18" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1.6" fill="currentColor"/><path d="m5 17 5-5 4 4 3-3 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <input type="text" id="chatInput" placeholder="Ask about a topic or a Concours...">
+        <button class="chat-send" id="chatSend" aria-label="Send"><svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M4 12 20 4l-6 16-3-7-7-1Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></button>
+      </div>
+    </section>
+
+    <section class="view" id="view-profile" data-view="profile">
+      <div class="view-head reveal reveal-up"><h1>Profile</h1><p>Manage your account, wallet and devices</p></div>
+      <div class="glass-card reveal reveal-fade" style="display:flex;gap:14px;align-items:center;">
+        <div class="avatar-circle" style="width:60px;height:60px;font-size:20px;">A</div>
+        <div style="flex:1;">
+          <h4 style="font-size:16px;display:flex;align-items:center;gap:8px;">Achiri Neba <span id="profilePlanChip"></span></h4>
+          <p style="font-size:12px;color:var(--text-secondary);">achiri.neba@learnova.app</p>
+        </div>
+        <button class="btn btn-outline btn-sm" id="editProfileBtn">Edit</button>
+      </div>
+
+      <div class="section-title"><h3>Preview mode</h3></div>
+      <div class="tab-toggle" id="roleToggle">
+        <button data-role="student" class="active">Student</button>
+        <button data-role="teacher">Teacher</button>
+      </div>
+
+      <div class="section-title"><h3>Wallet & L-Credits</h3></div>
+      <div class="glass-card reveal reveal-up">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div><div class="stat-label" style="color:var(--text-secondary);font-size:11.5px;">Balance</div><div class="stat-value" id="walletBalance" style="font-family:var(--font-display);font-size:24px;font-weight:800;">480 L-Credits</div></div>
+          <button class="btn btn-primary btn-sm" id="buyCreditsBtn">Top up</button>
+        </div>
+      </div>
+
+      <div class="section-title"><h3>Premium plans</h3></div>
+      <div class="grid-3" id="premiumGrid"></div>
+
+      <div id="teacherCertSection" style="display:none;">
+        <div class="section-title"><h3>Teacher certification</h3></div>
+        <div class="grid-3" id="certGrid"></div>
+      </div>
+
+      <div class="section-title"><h3>Device & session policy</h3></div>
+      <div class="glass-card reveal reveal-up">
+        <p style="font-size:12.5px;color:var(--text-secondary);line-height:1.6;">Your account is logged in on <strong id="deviceCount">2 of 2</strong> allowed devices for your current plan. Standard accounts get one device; higher Premium tiers unlock more.</p>
+      </div>
+
+      <div class="section-title"><h3>Payment history</h3></div>
+      <div id="paymentHistoryList"></div>
+    </section>
+
+    <section class="view" id="view-about" data-view="about">
+      <div class="view-head reveal reveal-up"><h1>About Learnova</h1><p>Built in Cameroon, for Cameroonian learners</p></div>
+      <div class="glass-card reveal reveal-fade" style="margin-bottom:18px;">
+        <p style="font-size:13px;color:var(--text-secondary);line-height:1.7;">Learnova was founded to give every O'Level, A'Level and Concours candidate in the Anglophone sub-system a fair shot at excellent revision material, honest ranking and trustworthy live teaching — whether they study in Bamenda, Buea, Douala or a village school with one shared smartphone. Learn. Grow. Succeed. is not a slogan; it is the order in which we build features.</p>
+      </div>
+      <div class="section-title"><h3>Our founders</h3></div>
+      <div class="grid-2" id="founderGrid"></div>
+    </section>
+
+    <section class="view" id="view-terms" data-view="terms">
+      <div class="view-head reveal reveal-up"><h1>Terms of Service</h1><p>Last updated September 2026</p></div>
+      <div id="termsContent"></div>
+    </section>
+
+    <section class="view" id="view-privacy" data-view="privacy">
+      <div class="view-head reveal reveal-up"><h1>Privacy Policy</h1><p>Last updated September 2026</p></div>
+      <div id="privacyContent"></div>
+    </section>
+
+    <section class="view" id="view-notices" data-view="notices">
+      <div class="view-head reveal reveal-up"><h1>Official Notices</h1><p>Education board updates and Learnova announcements</p></div>
+      <div class="tab-toggle" id="noticesTabs">
+        <button data-tab="official" class="active">Official Notices</button>
+        <button data-tab="updates">Learnova Updates</button>
+      </div>
+      <div id="noticesList"></div>
+    </section>
+
+    <section class="view" id="view-settings" data-view="settings">
+      <div class="view-head reveal reveal-up"><h1>Settings</h1><p>Appearance, notifications and account</p></div>
+      <div class="section-title"><h3>Appearance</h3></div>
+      <div class="radio-row" id="themeRadioRow">
+        <div class="radio-opt" data-theme-choice="light">Light</div>
+        <div class="radio-opt" data-theme-choice="dark">Dark</div>
+        <div class="radio-opt active" data-theme-choice="system">System</div>
+      </div>
+      <div class="section-title"><h3>Preferences</h3></div>
+      <div class="glass-card">
+        <div class="setting-row"><div><strong>Push notifications</strong><span>Competitions, results, official notices</span></div><label class="switch"><input type="checkbox" checked><span class="switch-track"></span></label></div>
+        <div class="setting-row"><div><strong>Sound effects</strong><span>Quiz and competition feedback sounds</span></div><label class="switch"><input type="checkbox" checked><span class="switch-track"></span></label></div>
+        <div class="setting-row"><div><strong>Screenshots blocked</strong><span>Anti-piracy control, always on</span></div><label class="switch"><input type="checkbox" checked disabled></label></div>
+      </div>
+      <div class="section-title"><h3>Account</h3></div>
+      <div class="glass-card">
+        <button class="btn btn-outline btn-block" id="changePwBtn" style="margin-bottom:10px;">Change password</button>
+        <button class="btn btn-danger btn-block" id="logoutBtn">Log out</button>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="tabbar" id="tabbar">
+    <button class="tab-btn active" data-view="home">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 11 12 4l8 7" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v9h12v-9" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+      Home<span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-view="library">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5v-13Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+      Library<span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-view="quizzes">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4 7v6c0 4.5 3.4 7.5 8 9 4.6-1.5 8-4.5 8-9V7l-8-4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Quizzes<span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-view="compete">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M6 4h12v4a6 6 0 0 1-12 0V4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M6 6H3v1a4 4 0 0 0 4 4M18 6h3v1a4 4 0 0 1-4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      Compete<span class="tab-dot"></span>
+    </button>
+    <button class="tab-btn" data-view="classes">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M5 20c1.4-3.8 4-5.6 7-5.6s5.6 1.8 7 5.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="19" cy="7" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+      Classes<span class="tab-dot"></span>
+    </button>
+  </nav>
+
+  <div class="owl-widget">
+    <div class="owl-bubble" id="owlBubble">
+      <p id="owlText"></p>
+      <button class="owl-bubble-close" id="owlNextBtn">Got it</button>
+    </div>
+    <button class="owl-avatar" id="owlAvatar" aria-label="Learnova guide"></button>
+  </div>
+
+  <div class="toast-stack" id="toastStack"></div>
+
+  <div class="modal-backdrop" id="modalRoot">
+    <div class="modal-sheet" id="modalSheet"></div>
+  </div>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/owl.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
