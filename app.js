@@ -15,6 +15,10 @@ const state = {
   hasUnlocked:false,
   registeredMonthly:false,
   registeredHackathon:false,
+  monthlyDeadline: Date.now() + 4*86400000 + 6*3600000,
+  monthlyWindowMs: 7*86400000,
+  hackathonDeadline: Date.now() + 9*86400000 + 3*3600000,
+  hackathonWindowMs: 14*86400000,
   paymentHistory: loadPaymentHistory()
 };
 
@@ -129,6 +133,67 @@ function updateLevelUI(){
     $("#referralGive").textContent = bonus.referrer + " L-Credits";
     $("#referralGet").textContent = bonus.newcomer + " L-Credits";
   }
+}
+
+function circularTimerMarkup(id, size, r, labelSize){
+  size = size || 60; r = r || 26; labelSize = labelSize || 15;
+  const c = 2 * Math.PI * r;
+  const mid = size / 2;
+  return `<svg class="circular-timer" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">
+    <circle class="ct-track" cx="${mid}" cy="${mid}" r="${r}"></circle>
+    <circle class="ct-progress" id="${id}" cx="${mid}" cy="${mid}" r="${r}" style="stroke-dasharray:${c};stroke-dashoffset:0;"></circle>
+    <text class="ct-label" id="${id}-label" x="${mid}" y="${mid + labelSize/3}" text-anchor="middle" style="font-size:${labelSize}px;">--</text>
+  </svg>`;
+}
+
+function stopCircularTimer(id){
+  clearInterval(window["__timer_" + id]);
+}
+
+function runCircularCountdownSeconds(id, totalSeconds, onComplete){
+  const circle = document.getElementById(id);
+  const label = document.getElementById(id + "-label");
+  if(!circle || !label) return;
+  const r = circle.r.baseVal.value;
+  const c = 2 * Math.PI * r;
+  let remaining = totalSeconds;
+  label.textContent = remaining;
+  stopCircularTimer(id);
+  window["__timer_" + id] = setInterval(()=>{
+    remaining -= 1;
+    const pct = Math.max(0, remaining / totalSeconds);
+    circle.style.strokeDashoffset = c * (1 - pct);
+    label.textContent = Math.max(0, remaining);
+    circle.classList.toggle("warn", remaining <= Math.ceil(totalSeconds * 0.3));
+    if(remaining <= 0){
+      stopCircularTimer(id);
+      if(onComplete) onComplete();
+    }
+  }, 1000);
+}
+
+function runLiveCountdownToDate(id, targetTs, totalWindowMs){
+  const circle = document.getElementById(id);
+  const label = document.getElementById(id + "-label");
+  if(!circle || !label) return;
+  const r = circle.r.baseVal.value;
+  const c = 2 * Math.PI * r;
+  stopCircularTimer(id);
+  function tick(){
+    const remain = Math.max(0, targetTs - Date.now());
+    const pct = totalWindowMs ? Math.max(0, Math.min(1, remain / totalWindowMs)) : 0;
+    circle.style.strokeDashoffset = c * (1 - pct);
+    const d = Math.floor(remain / 86400000);
+    const h = Math.floor((remain % 86400000) / 3600000);
+    const m = Math.floor((remain % 3600000) / 60000);
+    const s = Math.floor((remain % 60000) / 1000);
+    label.style.fontSize = d > 0 ? "12px" : "13px";
+    label.textContent = d > 0 ? (d + "d " + h + "h") : (h > 0 ? (h + "h " + m + "m") : (m + "m " + s + "s"));
+    circle.classList.toggle("warn", pct <= 0.15);
+    if(remain <= 0) stopCircularTimer(id);
+  }
+  tick();
+  window["__timer_" + id] = setInterval(tick, 1000);
 }
 
 function generateReceiptPdf(record){
@@ -280,6 +345,8 @@ function openModal(html){
 }
 function closeModal(){
   $("#modalRoot").classList.remove("open");
+  stopCircularTimer("quizTimer");
+  stopCircularTimer("hackathonCountdown");
 }
 $("#modalRoot").addEventListener("click", (e)=>{
   if(e.target.id === "modalRoot") closeModal();
@@ -328,10 +395,14 @@ function moveTabIndicator(){
   if(!bar || !indicator) return;
   const activeBtn = bar.querySelector(".tab-btn.active");
   if(!activeBtn) return;
+  const icon = activeBtn.querySelector("svg");
+  if(!icon) return;
   const barRect = bar.getBoundingClientRect();
-  const btnRect = activeBtn.getBoundingClientRect();
-  const x = (btnRect.left - barRect.left) + (btnRect.width / 2) - (indicator.offsetWidth / 2 || 22);
+  const iconRect = icon.getBoundingClientRect();
+  const x = iconRect.left - barRect.left + iconRect.width / 2;
+  const y = iconRect.top - barRect.top + iconRect.height / 2;
   indicator.style.setProperty("--tab-x", x + "px");
+  indicator.style.setProperty("--tab-y", y + "px");
   indicator.classList.add("show");
   bar.classList.add("raised");
   indicator.classList.add("raised");
@@ -378,11 +449,12 @@ function renderHome(){
       <div class="resource-thumb">${ICONS.desk}</div>
       <div class="resource-info"><strong>${notice.title}</strong><span>${notice.date}</span></div>
     </div>
-    <div class="resource-card reveal reveal-right">
-      <div class="resource-thumb">${ICONS.note}</div>
-      <div class="resource-info"><strong>Monthly competition \u2013 register now</strong><span>250 FCFA \u00b7 closes in 4 days</span></div>
+    <div class="resource-card reveal reveal-right" id="homeMonthlyCountdownCard">
+      ${circularTimerMarkup("homeMonthlyCountdown", 40, 16, 9)}
+      <div class="resource-info"><strong>Monthly competition \u2013 register now</strong><span>250 FCFA \u00b7 live countdown to close</span></div>
     </div>`;
-  $all(".resource-card", week)[1].addEventListener("click", ()=>showView("compete"));
+  $("#homeMonthlyCountdownCard").addEventListener("click", ()=>showView("compete"));
+  runLiveCountdownToDate("homeMonthlyCountdown", state.monthlyDeadline, state.monthlyWindowMs);
   revealIn($("#view-home"));
 }
 
@@ -576,24 +648,31 @@ function renderLeaderboard(){
 function startQuiz(subject, difficulty){
   let idx = 0;
   const answers = [];
+  const QUESTION_SECONDS = 20;
   function renderStep(){
     const item = QUIZ_QUESTIONS[idx];
     openModal(`
-      <div class="modal-head"><h3>${subject} \u2013 Question ${idx+1}/${QUIZ_QUESTIONS.length}</h3><button class="icon-btn" onclick="closeModal()">\u2715</button></div>
+      <div class="modal-head"><h3>${subject} \u2013 Question ${idx+1}/${QUIZ_QUESTIONS.length}</h3><button class="icon-btn" id="quizCloseBtn">\u2715</button></div>
+      <div class="quiz-timer-wrap">${circularTimerMarkup("quizTimer", 64, 27, 16)}</div>
       <p style="font-size:14.5px;font-weight:600;margin-bottom:14px;">${item.q}</p>
       <div id="quizOptions" style="display:flex;flex-direction:column;gap:10px;">
         ${item.options.map((o,i)=>`<button class="btn btn-outline btn-block" data-opt="${i}" style="justify-content:flex-start;">${o}</button>`).join("")}
       </div>`);
+    $("#quizCloseBtn").onclick = ()=>{ stopCircularTimer("quizTimer"); closeModal(); };
+    function advance(wasCorrect){
+      stopCircularTimer("quizTimer");
+      answers.push(wasCorrect);
+      idx++;
+      if(idx < QUIZ_QUESTIONS.length) renderStep();
+      else finishQuiz();
+    }
     $all("[data-opt]", $("#quizOptions")).forEach(btn=>{
-      btn.onclick = ()=>{
-        answers.push(parseInt(btn.dataset.opt) === item.answer);
-        idx++;
-        if(idx < QUIZ_QUESTIONS.length) renderStep();
-        else finishQuiz();
-      };
+      btn.onclick = ()=> advance(parseInt(btn.dataset.opt) === item.answer);
     });
+    runCircularCountdownSeconds("quizTimer", QUESTION_SECONDS, ()=> advance(false));
   }
   function finishQuiz(){
+    stopCircularTimer("quizTimer");
     const correct = answers.filter(Boolean).length;
     const pct = Math.round((correct/QUIZ_QUESTIONS.length)*100);
     const rank = DATA.rankFromScore(pct);
@@ -683,8 +762,12 @@ function renderCompete(){
   }
   refreshTeacherRoomCard();
 
-  const catChips = $("#monthlyCategoryChips");
-  catChips.innerHTML = DATA.monthlyCompetitionCategories.map(c=>`<button class="chip ${c.id===state.compete.monthlyCategory?"active":""}" data-cat="${c.id}">${c.label}</button>`).join("");
+  $("#monthlyTimerRow").innerHTML = `
+    ${circularTimerMarkup("monthlyCountdown", 58, 24, 11)}
+    <div class="timer-copy"><strong>Registration closing soon</strong><span>Live countdown to the entry deadline</span></div>`;
+  runLiveCountdownToDate("monthlyCountdown", state.monthlyDeadline, state.monthlyWindowMs);
+
+  const catChips = $("#monthlyCategoryChips");  catChips.innerHTML = DATA.monthlyCompetitionCategories.map(c=>`<button class="chip ${c.id===state.compete.monthlyCategory?"active":""}" data-cat="${c.id}">${c.label}</button>`).join("");
   $all("button", catChips).forEach(b=> b.onclick = ()=>{ state.compete.monthlyCategory = b.dataset.cat; renderCompete(); });
 
   $all("#monthlyModeToggle button").forEach(b=>{
@@ -732,6 +815,12 @@ function renderCompete(){
       const s = DATA.series[card.dataset.series];
       openModal(`
         <div class="modal-head"><h3>Series ${card.dataset.series} \u2013 ${s.track}</h3><button class="icon-btn" onclick="closeModal()">\u2715</button></div>
+        <div class="glass-card" style="margin-bottom:14px;">
+          <div class="timer-row" id="hackathonTimerRow">
+            ${circularTimerMarkup("hackathonCountdown", 58, 24, 11)}
+            <div class="timer-copy"><strong>Hackathon entry window</strong><span>Live countdown to the qualification deadline</span></div>
+          </div>
+        </div>
         <div class="legal-block">
           <h3>Series combination</h3><p>${s.core.join(", ")}</p>
           <h3>Additional subjects</h3><p>${s.additional.join(", ")}</p>
@@ -740,6 +829,7 @@ function renderCompete(){
         </div>
         <p style="font-size:11.5px;color:var(--text-muted);margin-bottom:12px;">Qualification: top 3 students of this series per school, from the monthly competition.</p>
         <button class="btn btn-primary btn-block" id="hackathonRegisterBtn">${state.registeredHackathon?"Registered \u2713":"Register for Hackathon \u2013 500 FCFA"}</button>`);
+      runLiveCountdownToDate("hackathonCountdown", state.hackathonDeadline, state.hackathonWindowMs);
       $("#hackathonRegisterBtn").onclick = ()=>{
         if(state.registeredHackathon){ toast("You are already registered for the Hackathon."); return; }
         startPayment("National Hackathon \u2013 Series " + card.dataset.series, 500, ()=>{
@@ -1061,6 +1151,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
   initNav();
   initOwl();
   updateLevelUI();
+  applySeasonalIcon();
+  applySeasonalTheme();
+  initSeasonPreview();
   showView("home");
   setTimeout(()=>{
     if(state.view !== "home") return;
@@ -1074,6 +1167,200 @@ document.addEventListener("DOMContentLoaded", ()=>{
   });
 });
 
+function getThemeSeason(today){
+  today = today || new Date();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+  if((month === 12 && day >= 15) || (month === 1 && day <= 31)){
+    if(month === 12 && day <= 26) return "christmas";
+    if(month === 12 && day >= 27) return "newyear";
+    if(month === 1) return "newyear";
+  }
+  return null;
+}
+
+function buildSnowflakeField(){
+  if(document.getElementById("snowflakeField")) return;
+  const field = document.createElement("div");
+  field.id = "snowflakeField";
+  field.className = "snowflake-field";
+  const glyphs = ["\u2744", "\u2745", "\u2746"];
+  for(let i=0;i<16;i++){
+    const flake = document.createElement("span");
+    flake.className = "snowflake";
+    flake.textContent = glyphs[i % glyphs.length];
+    flake.style.left = (Math.random()*100) + "%";
+    flake.style.animationDuration = (8 + Math.random()*10) + "s";
+    flake.style.animationDelay = (Math.random()*10) + "s";
+    flake.style.fontSize = (10 + Math.random()*14) + "px";
+    field.appendChild(flake);
+  }
+  document.body.appendChild(field);
+}
+
+function buildHollyBadge(){
+  const host = document.getElementById("hamburgerBtn");
+  if(!host || host.querySelector(".holly-badge")) return;
+  const holly = document.createElement("span");
+  holly.className = "holly-badge";
+  holly.innerHTML = `<svg viewBox="0 0 32 32" width="18" height="18">
+    <path d="M16 4c6 2 10 8 6 16-6 2-12-2-12-8 0-5 3-7 6-8Z" fill="#1E8E4A"/>
+    <path d="M16 4c-6 2-10 8-6 16 6 2 12-2 12-8 0-5-3-7-6-8Z" fill="#22A354"/>
+    <circle cx="14" cy="23" r="2.6" fill="#D6303F"/>
+    <circle cx="18.5" cy="24.5" r="2.6" fill="#E5384A"/>
+    <circle cx="16.2" cy="27" r="2.6" fill="#C22836"/>
+  </svg>`;
+  host.appendChild(holly);
+}
+
+function buildTabbarSeasonalDecor(){
+  const bar = document.getElementById("tabbar");
+  if(!bar || bar.querySelector(".tabbar-snowman")) return;
+  const snowman = document.createElement("span");
+  snowman.className = "tabbar-snowman";
+  snowman.textContent = "\u26C4";
+  bar.appendChild(snowman);
+  const icicles = document.createElement("span");
+  icicles.className = "tabbar-icicles";
+  bar.appendChild(icicles);
+}
+
+function buildNewYearRibbon(){
+  if(document.getElementById("newYearRibbon")) return;
+  const year = new Date().getFullYear();
+  const ribbon = document.createElement("div");
+  ribbon.id = "newYearRibbon";
+  ribbon.className = "newyear-ribbon";
+  ribbon.innerHTML = `
+    <span class="pompom pompom-tr1"></span>
+    <span class="pompom pompom-tr2"></span>
+    <span class="pompom pompom-bl"></span>
+    <span class="newyear-text">\u2728 Happy New Year ${year} \u2728</span>`;
+  const topbar = document.querySelector(".topbar");
+  if(topbar && topbar.parentNode) topbar.parentNode.insertBefore(ribbon, topbar.nextSibling);
+}
+
+function buildTabbarYearBadge(){
+  const bar = document.getElementById("tabbar");
+  if(!bar || bar.querySelector(".tabbar-year")) return;
+  const year = new Date().getFullYear();
+  const badge = document.createElement("span");
+  badge.className = "tabbar-year";
+  badge.textContent = year;
+  bar.appendChild(badge);
+}
+
+function clearSeasonalDecor(){
+  const field = document.getElementById("snowflakeField"); if(field) field.remove();
+  const ribbon = document.getElementById("newYearRibbon"); if(ribbon) ribbon.remove();
+  const holly = document.querySelector(".holly-badge"); if(holly) holly.remove();
+  const snowman = document.querySelector(".tabbar-snowman"); if(snowman) snowman.remove();
+  const icicles = document.querySelector(".tabbar-icicles"); if(icicles) icicles.remove();
+  const yearBadge = document.querySelector(".tabbar-year"); if(yearBadge) yearBadge.remove();
+}
+
+function getEffectiveSeason(){
+  const override = localStorage.getItem("learnova_season_preview");
+  if(override && override !== "auto") return override === "none" ? null : override;
+  return getThemeSeason();
+}
+
+function applyOwlSeasonalLook(active){
+  const avatar = document.getElementById("owlAvatar");
+  if(!avatar) return;
+  avatar.classList.toggle("wearing-santa-hat", !!active);
+}
+
+function applySeasonalTheme(){
+  clearSeasonalDecor();
+  const season = getEffectiveSeason();
+  document.documentElement.setAttribute("data-season", season || "none");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(season === "christmas" || season === "newyear"){
+    if(!reduceMotion) buildSnowflakeField();
+    buildHollyBadge();
+    buildTabbarSeasonalDecor();
+    applyOwlSeasonalLook(true);
+  } else {
+    applyOwlSeasonalLook(false);
+  }
+  if(season === "newyear"){
+    buildNewYearRibbon();
+    buildTabbarYearBadge();
+  }
+}
+
+function initSeasonPreview(){
+  const row = document.getElementById("seasonPreviewRow");
+  if(!row) return;
+  const stored = localStorage.getItem("learnova_season_preview") || "auto";
+  $all(".radio-opt", row).forEach(el=>{
+    el.classList.toggle("active", el.dataset.seasonPreview === stored);
+    el.addEventListener("click", ()=>{
+      localStorage.setItem("learnova_season_preview", el.dataset.seasonPreview);
+      $all(".radio-opt", row).forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      applySeasonalTheme();
+      applySeasonalIcon();
+      toast("Seasonal preview updated.");
+    });
+  });
+}
+
+document.addEventListener("visibilitychange", ()=>{
+  document.documentElement.classList.toggle("app-hidden", document.hidden);
+});
+
+const SEASONAL_ICONS = [
+  { name:"christmas", file:"icon-christmas.png", startMonth:12, startDay:15, endMonth:12, endDay:26 },
+  { name:"newyear", file:"icon-newyear.png", startMonth:12, startDay:27, endMonth:1, endDay:2 },
+  { name:"youthday", file:"icon-youthday.png", startMonth:2, startDay:8, endMonth:2, endDay:12 },
+  { name:"independence", file:"icon-independence.png", startMonth:5, startDay:18, endMonth:5, endDay:21 }
+];
+
+function dateInSeasonalRange(today, season){
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
+  const stamp = month * 100 + day;
+  const start = season.startMonth * 100 + season.startDay;
+  const end = season.endMonth * 100 + season.endDay;
+  if(start <= end) return stamp >= start && stamp <= end;
+  return stamp >= start || stamp <= end;
+}
+
+function fileExists(url){
+  return new Promise(resolve=>{
+    const img = new Image();
+    img.onload = ()=> resolve(true);
+    img.onerror = ()=> resolve(false);
+    img.src = url;
+  });
+}
+
+async function applySeasonalIcon(){
+  const override = localStorage.getItem("learnova_season_preview");
+  const today = new Date();
+  let active = SEASONAL_ICONS.find(season => dateInSeasonalRange(today, season));
+  if(override && override !== "auto"){
+    active = SEASONAL_ICONS.find(season => season.name === override) || active;
+  }
+  const fallbackFavicon = "icon-32.png";
+  const fallbackTouch = "icon-180.png";
+  if(!active){
+    setAppIcon(fallbackFavicon, fallbackTouch);
+    return;
+  }
+  const exists = await fileExists(active.file);
+  if(exists) setAppIcon(active.file, active.file);
+  else setAppIcon(fallbackFavicon, fallbackTouch);
+}
+
+function setAppIcon(faviconHref, touchHref){
+  const favicon = document.getElementById("faviconLink");
+  const touch = document.getElementById("appleTouchIconLink");
+  if(favicon) favicon.href = faviconHref;
+  if(touch) touch.href = touchHref;
+}
 
 let deferredInstallPrompt = null;
 function isStandaloneApp(){

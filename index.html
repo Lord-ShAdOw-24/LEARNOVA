@@ -3,16 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Learn. Grow. Succeed.">
+<meta name="description" content="Learnova - Learn. Grow. Succeed. The mobile study platform for O'Level, A'Level and Concours in Cameroon.">
+<title>Learnova – Learn. Grow. Succeed.</title>
+
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0A1E3C">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Learnova">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Learnova – Learn. Grow. Succeed.</title>
-<link rel="icon" type="image/png" href="logo-icon.png">
+
+<link rel="icon" type="image/png" sizes="32x32" id="faviconLink" href="icon-32.png">
+<link rel="apple-touch-icon" id="appleTouchIconLink" href="icon-180.png">
+
+<meta property="og:title" content="Learnova – Learn. Grow. Succeed.">
+<meta property="og:description" content="The mobile study platform for O'Level, A'Level and Concours in Cameroon.">
+<meta property="og:image" content="logo-transparent.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Learnova – Learn. Grow. Succeed.">
+<meta name="twitter:image" content="logo-transparent.png">
+
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="animations.css">
 </head>
@@ -213,6 +224,9 @@
 
       <div id="competeMonthlyPane" style="display:none;">
         <p style="font-size:12.5px;color:var(--text-secondary);margin-bottom:10px;">Open to eight learner categories · 250 FCFA per individual entrant</p>
+        <div class="glass-card reveal reveal-fade" style="margin-bottom:14px;">
+          <div class="timer-row" id="monthlyTimerRow"></div>
+        </div>
         <div class="chip-row" id="monthlyCategoryChips"></div>
         <div class="tab-toggle" id="monthlyModeToggle">
           <button data-mode="individual" class="active">Individual</button>
@@ -311,7 +325,7 @@
           <div class="referral-row"><span>You earn per referral</span><b id="referralGive">75 L-Credits</b></div>
           <div class="referral-row"><span>Friend receives</span><b id="referralGet">115 L-Credits</b></div>
         </div>
-        <p style="font-size:10.5px;color:var(--text-muted);margin-top:10px;line-height:1.5;">Levels rise as you spend on Premium, L-Credits, competitions and classes. Higher levels unlock bigger referral bonuses for you and everyone you invite \u2014 up to Level 10, Diamond.</p>
+        <p style="font-size:10.5px;color:var(--text-muted);margin-top:10px;line-height:1.5;">Levels rise as you spend on Premium, L-Credits, competitions and classes. Higher levels unlock bigger referral bonuses for you and everyone you invite — up to Level 10, Diamond.</p>
       </div>
 
       <div class="section-title"><h3>Premium plans</h3></div>
@@ -373,6 +387,15 @@
         <div class="setting-row"><div><strong>Sound effects</strong><span>Quiz and competition feedback sounds</span></div><label class="switch"><input type="checkbox" checked><span class="switch-track"></span></label></div>
         <div class="setting-row"><div><strong>Screenshots blocked</strong><span>Anti-piracy control, always on</span></div><label class="switch"><input type="checkbox" checked disabled></label></div>
       </div>
+      <div class="section-title"><h3>Seasonal theme preview</h3></div>
+      <div class="glass-card">
+        <p style="font-size:11.5px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;">The real app switches itself automatically by date. Use this to preview a look right now, on your device only.</p>
+        <div class="radio-row" id="seasonPreviewRow">
+          <div class="radio-opt active" data-season-preview="auto">Auto (real date)</div>
+          <div class="radio-opt" data-season-preview="christmas">Christmas</div>
+          <div class="radio-opt" data-season-preview="newyear">New Year</div>
+        </div>
+      </div>
       <div class="section-title"><h3>Account</h3></div>
       <div class="glass-card">
         <button class="btn btn-outline btn-block" id="changePwBtn" style="margin-bottom:10px;">Change password</button>
@@ -422,15 +445,15 @@
 
 </div>
 
-  <div class="install-prompt" id="installPrompt" aria-live="polite" hidden>
-    <div class="install-prompt-icon"><img src="icon-192.png" alt="Learnova"></div>
-    <div class="install-prompt-content">
-      <strong>Install Learnova</strong>
-      <span>Get the full app experience on your device.</span>
-    </div>
-    <button class="install-prompt-btn" id="installAppBtn" type="button">Install</button>
-    <button class="install-prompt-close" id="installPromptClose" type="button" aria-label="Close">×</button>
+<div class="install-prompt" id="installPrompt" aria-live="polite" hidden>
+  <div class="install-prompt-icon"><img src="icon-192.png" alt="Learnova"></div>
+  <div class="install-prompt-content">
+    <strong>Install Learnova</strong>
+    <span>Get the full app experience on your device.</span>
   </div>
+  <button class="install-prompt-btn" id="installAppBtn" type="button">Install</button>
+  <button class="install-prompt-close" id="installPromptClose" type="button" aria-label="Close">×</button>
+</div>
 
 <script src="data.js"></script>
 <script src="owl.js"></script>

@@ -1,11 +1,16 @@
-const CACHE_NAME = "learnova-pwa-v3";
+const CACHE_NAME = "learnova-pwa-v4";
 const APP_SHELL = [
   "./","./index.html","./style.css","./animations.css","./app.js","./data.js","./owl.js",
-  "./logo-icon.png","./logo-transparent.png","./ceo.jpg","./cofounder-2.jpg","./cofounder-3.jpg","./cofounder-4.jpg",
-  "./icon-192.png","./icon-512.png","./manifest.json"
+  "./logo-icon.png","./logo-transparent.png",
+  "./icon-32.png","./icon-180.png","./icon-192.png","./icon-512.png","./manifest.json",
+  "./ceo.jpg","./cofounder-2.jpg","./cofounder-3.jpg","./cofounder-4.jpg"
 ];
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).catch(() => {}));
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(cache =>
+      Promise.all(APP_SHELL.map(url => cache.add(url).catch(() => {})))
+    )
+  );
   self.skipWaiting();
 });
 self.addEventListener("activate", event => {
